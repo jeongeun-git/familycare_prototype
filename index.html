@@ -2,17 +2,30 @@
   <!DOCTYPE html>
   <html lang="en">
     <head>
+      <script>
+        (function (m, a, z, e) {
+          var s, t;
+          try {
+            t = m.sessionStorage.getItem('maze-us');
+          } catch (err) {}
+
+          if (!t) {
+            t = new Date().getTime();
+            try {
+              m.sessionStorage.setItem('maze-us', t);
+            } catch (err) {}
+          }
+
+          s = a.createElement('script');
+          s.src = z + '?apiKey=' + e;
+          s.async = true;
+          a.getElementsByTagName('head')[0].appendChild(s);
+          m.mazeUniversalSnippetApiKey = e;
+        })(window, document, 'https://snippet.maze.co/maze-universal-loader.js', 'fbb1750d-6833-485a-bd82-068117634b78');
+        </script>
       <meta charset="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <title>패밀리케어_프로토타입</title>
-
-      <!-- ✅ Maze tracking snippet 시작 -->
-        <script
-          async
-          src="https://snippet.maze.co/maze.js?YOUR_MAZE_PROJECT_TOKEN"
-          data-maze-token="YOUR_MAZE_PROJECT_TOKEN"
-        ></script>
-      <!-- ✅ Maze tracking snippet 끝 -->
     </head>
 
     <body>
