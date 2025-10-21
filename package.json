@@ -52,9 +52,12 @@
             "@vitejs/plugin-react-swc": "^3.10.2",
             "vite": "^6.4.1"
       },
+      "engines": {
+    "node": ">=18.0.0"
+  },
       "scripts": {
-            "dev": "vite",
-            "build": "vite build",
-            "preview": "vite preview"
+      "dev": "vite",
+      "build": "node node_modules/vite/bin/vite.js build",
+      "preview": "vite preview"
       }
 }
