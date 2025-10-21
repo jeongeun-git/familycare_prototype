@@ -1,0 +1,37 @@
+
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>패밀리케어_프로토타입</title>
+
+      <!-- ✅ Maze tracking snippet 시작 -->
+      <script>
+        (function (m, a, z, e) {
+          var s, t;
+          try {
+            t = m.sessionStorage.getItem('maze-us');
+          } catch (err) {}
+          if (!t) {
+            t = new Date().getTime();
+            try {
+              m.sessionStorage.setItem('maze-us', t);
+            } catch (err) {}
+          }
+          s = a.createElement('script');
+          s.src = 'https://snippet.maze.co/maze.js?' + t;
+          s.async = true;
+          e = a.getElementsByTagName('script')[0];
+          e.parentNode.insertBefore(s, e);
+        })(window, document);
+      </script>
+      <!-- ✅ Maze tracking snippet 끝 -->
+    </head>
+
+    <body>
+      <div id="root"></div>
+      <script type="module" src="/src/main.tsx"></script>
+    </body>
+  </html>
+  
