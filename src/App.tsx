@@ -19,6 +19,7 @@ export default function App() {
         <Route path="/diet/result" element={<DietResultPage />} />
         <Route path="/medication" element={<MedicationPage />} />
         <Route path="/medication/register" element={<MedicationRegisterPage />} />
+        <Route path="/medication/result" element={<MedicationResultPage />} />
       </Routes>
       <Toaster />
     </HashRouter>
