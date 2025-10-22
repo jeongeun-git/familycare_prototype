@@ -1037,23 +1037,11 @@ export default function MedicationPage() {
   const [medications, setMedications] = useState(() =>
     getMedications(),
   );
-  const [showSuccessModal, setShowSuccessModal] =
-    useState(false);
+
   const [refreshKey, setRefreshKey] = useState(0);
   const [showPointToast, setShowPointToast] = useState(false);
   const [showCompletedToast, setShowCompletedToast] =
     useState(false);
-
-  useEffect(() => {
-    // Check localStorage for success flag
-    const success = localStorage.getItem(
-      "medication_registered",
-    );
-    if (success === "true") {
-      setShowSuccessModal(true);
-      localStorage.removeItem("medication_registered");
-    }
-  }, []);
 
   useEffect(() => {
     setRecords(getMedicationRecordsByDate(selectedDate));
@@ -1098,12 +1086,6 @@ export default function MedicationPage() {
           onShowCompletedToast={handleShowCompletedToast}
         />
       </div>
-
-      {/* Success Modal */}
-      <MedicationSuccessModal
-        isOpen={showSuccessModal}
-        onClose={() => setShowSuccessModal(false)}
-      />
 
       {/* Toast Messages */}
       <PointToast

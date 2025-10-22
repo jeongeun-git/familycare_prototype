@@ -595,6 +595,8 @@ export default function MedicationRegisterPage() {
       if (medicationName.trim()) {
         allMedications.push(medicationName);
       }
+      
+      const medicationsToAdd: any[] = []; // ✅ 추가: 저장된 약들을 담을 배열
 
       allMedications.forEach((name) => {
         const medication = {
@@ -606,12 +608,14 @@ export default function MedicationRegisterPage() {
           startDate: new Date().toISOString().split("T")[0],
         };
         saveMedication(medication);
+        medicationsToAdd.push(medication);
       });
 
-      // Set success flag in localStorage
-      localStorage.setItem("medication_registered", "true");
-      // Navigate to medication page
-      navigate("/medication");
+      navigate("/medication/result", {
+        state: {
+          medications: medicationsToAdd,
+        },
+      });
     }
 
     return true;

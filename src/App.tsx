@@ -6,6 +6,7 @@ import DietWritePage from './pages/DietWritePage';
 import DietResultPage from './pages/DietResultPage';
 import MedicationPage from './pages/MedicationPage';
 import MedicationRegisterPage from './pages/MedicationRegisterPage';
+import MedicationResultPage from './pages/MedicationResultPage';
 import { Toaster } from './components/ui/sonner';
 
 export default function App() {
