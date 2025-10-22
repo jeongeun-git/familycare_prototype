@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ChevronLeft, Pen, ChevronDown } from "lucide-react";
 import svgPaths from "../imports/svg-2x9qdf13yv";
-import imgChatGptImage20259250403501 from "figma:asset/4a645916c966c58fc583c735a61d2ec0ae1024cb.png";
+import AiCamera from "@/assets/diet_ai_camera_img.png";
 import TimePicker from "../components/TimePicker";
 import PhotoCaptureModal from "../components/PhotoCaptureModal";
 import FoodListItem, {
@@ -11,6 +11,7 @@ import FoodListItem, {
 import {
   saveDietRecord,
   getTodayDate,
+  getDietRecordsByDate,
 } from "../utils/dietStorage";
 
 type MealType =
@@ -55,7 +56,7 @@ function PhotoUploadContainer({
         <img
           alt="AI 아이콘"
           className="w-[34px] h-[35px] object-cover"
-          src={imgChatGptImage20259250403501}
+          src={AiCamera}
         />
         <div className="absolute -bottom-1 -right-1 bg-emerald-900 rounded-full size-[18px] flex items-center justify-center">
           <svg
@@ -258,7 +259,7 @@ function RecordCommentContainer({
         value={comment}
         onChange={(e) => onCommentChange(e.target.value)}
         placeholder="오늘 식사 어떠셨나요? 기록 한마디를 남겨보세요!"
-        className="w-full h-[104px] border border-neutral-100 rounded-[12px] p-[16px] text-[14px] text-neutral-700 tracking-[-0.28px] leading-[20px] outline-none focus:border-emerald-600 resize-none placeholder:text-neutral-400"
+        className="bg-white border border-neutral-100 h-[104px] rounded-[12px] w-full resize-none p-[16px] text-[14px] text-neutral-700 tracking-[-0.28px] leading-[20px] outline-none focus:border-emerald-600"
       />
     </div>
   );
@@ -266,68 +267,7 @@ function RecordCommentContainer({
 
 function StatusBar() {
   return (
-    <div className="bg-white h-[40px] shrink-0 sticky top-0 w-full z-20">
-      <div className="flex flex-row items-center size-full">
-        <div className="box-border content-stretch flex h-[40px] items-center justify-between px-[24px] py-[10px] relative w-full">
-          <p className="text-[#1d1b20] text-[14px] leading-[20px] tracking-[0.14px]">
-            9:30
-          </p>
-          <div className="flex gap-[6px] items-center">
-            {/* Wifi */}
-            <svg
-              width="17"
-              height="17"
-              viewBox="0 0 17 17"
-              fill="none"
-            >
-              <path
-                d={svgPaths.p34567080}
-                fill="#1D1B20"
-                opacity="0.1"
-              />
-            </svg>
-            {/* Signal */}
-            <svg
-              width="17"
-              height="17"
-              viewBox="0 0 17 17"
-              fill="none"
-            >
-              <path d={svgPaths.p112c6500} fill="#1D1B20" />
-            </svg>
-            {/* Battery */}
-            <svg
-              width="8"
-              height="15"
-              viewBox="0 0 8 15"
-              fill="none"
-            >
-              <path
-                d={svgPaths.p2dfd100}
-                fill="#1D1B20"
-                opacity="0.3"
-              />
-              <path d={svgPaths.p2657cc00} fill="#1D1B20" />
-            </svg>
-          </div>
-          <div className="absolute left-1/2 size-[24px] top-[7px] translate-x-[-50%]">
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-            >
-              <path
-                clipRule="evenodd"
-                d={svgPaths.p34df7200}
-                fill="#1D1B20"
-                fillRule="evenodd"
-              />
-            </svg>
-          </div>
-        </div>
-      </div>
-    </div>
+    <div className="box-border content-stretch flex h-[44px] items-center justify-between overflow-clip px-[27px] py-0 w-full" />
   );
 }
 
@@ -335,10 +275,10 @@ function DetailHeaders() {
   const navigate = useNavigate();
 
   return (
-    <div className="bg-white sticky top-[40px] z-10 shadow-[0px_4px_11px_0px_rgba(232,232,232,0.2)] w-full">
-      <div className="overflow-clip rounded-[inherit] size-full">
-        <div className="box-border content-stretch flex flex-col gap-[10px] h-[48px] items-start px-[16px] py-[8px] w-full">
-          <div className="content-stretch flex h-[32px] items-center justify-between w-full">
+    <div className="sticky top-0 z-10 box-border content-stretch flex flex-col gap-[10px] items-start overflow-clip px-[16px] py-[8px] shadow-[0px_4px_11px_0px_rgba(232,232,232,0.2)] w-full bg-white">
+      <div className="content-stretch flex h-[32px] items-center justify-between relative shrink-0 w-full">
+        <div className="flex h-[32px] items-center justify-between relative w-full">
+          <div className="content-stretch flex h-[32px] items-center justify-between relative shrink-0 w-full">
             <button
               onClick={() => navigate(-1)}
               className="relative shrink-0 size-[24px]"
@@ -388,6 +328,27 @@ function PointsInfoContainer() {
       </p>
     </div>
   );
+}
+
+// ✅ 연속 기록 일수 계산 함수 추가
+function calculateConsecutiveDays(): number {
+  const today = getTodayDate();
+  let streak = 1; // 오늘 기록했으므로 최소 1일
+  
+  // 어제부터 거슬러 올라가며 체크
+  for (let i = 1; i < 365; i++) {
+    const date = new Date(today);
+    date.setDate(date.getDate() - i);
+    const dateStr = date.toISOString().split('T')[0];
+    
+    const records = getDietRecordsByDate(dateStr);
+    if (records.length === 0) {
+      break; // 기록이 없으면 연속 끊김
+    }
+    streak++;
+  }
+  
+  return streak;
 }
 
 export default function DietWritePage() {
@@ -460,7 +421,9 @@ export default function DietWritePage() {
     console.log("Edit food:", id);
   };
 
+  // ✅ 수정된 handleSubmit 함수
   const handleSubmit = () => {
+    // 1. 음식 항목 준비
     const foodItems = foodInput.trim()
       ? foodInput
           .split(",")
@@ -470,6 +433,11 @@ export default function DietWritePage() {
         ? foodList.map((food) => food.name)
         : ["음식명 없음"];
 
+    // 2. 저장 전에 오늘 기록 개수 확인 (첫 기록인지 판단)
+    const todayRecords = getDietRecordsByDate(getTodayDate());
+    const isFirstRecordToday = todayRecords.length === 0;
+
+    // 3. 레코드 객체 생성
     const record = {
       id: Date.now().toString(),
       date: getTodayDate(),
@@ -480,18 +448,32 @@ export default function DietWritePage() {
       imageUrl: photoUrl || undefined,
     };
 
-    const isFirstRecord = saveDietRecord(record);
+    // 4. 레코드 저장
+    saveDietRecord(record);
+
+    // 5. 연속 기록 일수 계산
+    const streak = calculateConsecutiveDays();
 
     console.log("Submitting record:", record);
-    console.log("Is first record:", isFirstRecord);
+    console.log("Is first record today:", isFirstRecordToday);
+    console.log("Consecutive days:", streak);
 
-    // Navigate back with state
-    navigate("/diet", {
+    // ✅ 6. DietResultPage로 이동 (기존 코드 대체)
+    navigate("/diet/result", {
       state: {
-        showToast: isFirstRecord,
-        newRecord: !isFirstRecord,
+        newRecord: record,
+        isFirstRecord: isFirstRecordToday,
+        streak: streak,
       },
     });
+
+    // ❌ 기존 코드 (제거됨)
+    // navigate("/diet", {
+    //   state: {
+    //     showToast: isFirstRecord,
+    //     newRecord: !isFirstRecord,
+    //   },
+    // });
   };
 
   return (
