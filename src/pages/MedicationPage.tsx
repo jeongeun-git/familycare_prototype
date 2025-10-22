@@ -667,7 +667,7 @@ function RTContent({
       </div>
 
       {/* Medicine List */}
-      <div className="content-stretch flex flex-col gap-[16px] items-start relative w-full overflow-y-auto flex-1 min-h-0 scrollbar-hide pb-[80px]">
+      <div className="content-stretch flex flex-col gap-[16px] items-start relative w-full overflow-y-auto flex-1 min-h-0 scrollbar-hide pb-[40px]">
         {timeSlots.length === 0 ? (
           <div className="w-full flex items-center justify-center py-12">
             <p className="text-neutral-500 text-[14px] leading-[20px] tracking-[-0.28px]">
@@ -746,35 +746,34 @@ function RTContent({
             </div>
           ))
         )}
-      </div>
-
-      {/* Points Info Container */}
-      <div className="w-full px-[16px] py-[12px] z-30 content-stretch flex flex-col gap-[4px] items-start relative shrink-0 w-full mt-auto">
-        <div className="content-stretch flex gap-[4px] items-center relative shrink-0 w-full">
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-          >
-            <path
-              d="M8 10.6667V8M8 5.33333H8.00667M14.6667 8C14.6667 11.6819 11.6819 14.6667 8 14.6667C4.3181 14.6667 1.33333 11.6819 1.33333 8C1.33333 4.3181 4.3181 1.33333 8 1.33333C11.6819 1.33333 14.6667 4.3181 14.6667 8Z"
-              stroke="#A3A3A3"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="1.5"
-            />
-          </svg>
-          <p className="font-bold leading-[20px] text-[14px] text-neutral-400 tracking-[-0.28px]">
-            포인트 적립 안내
-          </p>
+        {/* Points Info Container */}
+          <div className="w-full py-[12px] content-stretch flex flex-col gap-[4px] items-start relative shrink-0 w-full">
+            <div className="content-stretch flex gap-[4px] items-center relative shrink-0 w-full">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+              >
+                <path
+                  d="M8 10.6667V8M8 5.33333H8.00667M14.6667 8C14.6667 11.6819 11.6819 14.6667 8 14.6667C4.3181 14.6667 1.33333 11.6819 1.33333 8C1.33333 4.3181 4.3181 1.33333 8 1.33333C11.6819 1.33333 14.6667 4.3181 14.6667 8Z"
+                  stroke="#A3A3A3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="1.5"
+                />
+              </svg>
+              <p className="font-bold leading-[20px] text-[14px] text-neutral-400 tracking-[-0.28px]">
+                포인트 적립 안내
+              </p>
+            </div>
+            <p className="font-medium leading-[20px] text-[14px] text-neutral-400 tracking-[-0.28px]">
+              포인트는 하루 최초 기록에만 지급되며, 이후 기록은
+              포인트 적립 없이 저장됩니다.
+            </p>
+          </div>
         </div>
-        <p className="font-medium leading-[20px] text-[14px] text-neutral-400 tracking-[-0.28px]">
-          포인트는 하루 최초 기록에만 지급되며, 이후 기록은
-          포인트 적립 없이 저장됩니다.
-        </p>
       </div>
-    </div>
   );
 }
 
@@ -1029,6 +1028,8 @@ function HorizontalCalendar({
 
 export default function MedicationPage() {
   const navigate = useNavigate();
+
+
   const [selectedDate, setSelectedDate] =
     useState(getTodayDate());
   const [records, setRecords] = useState(() =>
@@ -1042,6 +1043,13 @@ export default function MedicationPage() {
   const [showPointToast, setShowPointToast] = useState(false);
   const [showCompletedToast, setShowCompletedToast] =
     useState(false);
+
+  useEffect(() => {
+    if (medications.length > 0) {
+      navigate('/medication/result', { replace: true });
+    }
+  }, [medications, navigate]);
+
 
   useEffect(() => {
     setRecords(getMedicationRecordsByDate(selectedDate));
@@ -1076,19 +1084,22 @@ export default function MedicationPage() {
         selectedDate={selectedDate}
         onDateSelect={setSelectedDate}
       />
-      <div className="flex-1 overflow-auto mt-[26px]">
-        <RTContent
+      <div className="flex-1">
+        <div className="bg-[#f2f5ed] h-full flex items-center justify-center p-[16px]">
+          <EmptyStateContent />
+        </div>
+        {/* <RTContent
           hasRecords={hasRecords}
           medications={medications}
           selectedDate={selectedDate}
           onMedicationTaken={handleMedicationTaken}
           onShowPointToast={handleShowPointToast}
           onShowCompletedToast={handleShowCompletedToast}
-        />
+        /> */}
       </div>
 
       {/* Toast Messages */}
-      <PointToast
+      {/* <PointToast
         show={showPointToast}
         points={50}
         variant="given"
@@ -1096,7 +1107,7 @@ export default function MedicationPage() {
       <PointToast
         show={showCompletedToast}
         message="복용 기록 완료"
-      />
+      /> */}
     </div>
   );
 }

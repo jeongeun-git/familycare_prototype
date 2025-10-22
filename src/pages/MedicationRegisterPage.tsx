@@ -612,8 +612,10 @@ export default function MedicationRegisterPage() {
       });
 
       navigate("/medication/result", {
+        replace: true,
         state: {
           medications: medicationsToAdd,
+          showSuccessModal: true,
         },
       });
     }
