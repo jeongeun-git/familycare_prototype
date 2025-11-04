@@ -1054,11 +1054,11 @@ export default function MedicationPage() {
   }
   }, []);
 
-  useEffect(() => {
-    if (medications.length > 0) {
-      navigate('/medication/result', { replace: true });
-    }
-  }, [medications, navigate]);
+  // useEffect(() => {
+  //   if (medications.length > 0) {
+  //     navigate('/medication/result', { replace: true });
+  //   }
+  // }, [medications, navigate]);
 
 
   useEffect(() => {
