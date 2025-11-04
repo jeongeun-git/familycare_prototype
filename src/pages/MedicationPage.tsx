@@ -1044,6 +1044,16 @@ export default function MedicationPage() {
   const [showCompletedToast, setShowCompletedToast] =
     useState(false);
 
+  
+  //테스트 시마다 데이터 초기화
+  useEffect(() => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const isMazeTest = urlParams.has("reset");
+  if (isMazeTest) {
+    localStorage.clear();
+  }
+  }, []);
+
   useEffect(() => {
     if (medications.length > 0) {
       navigate('/medication/result', { replace: true });
