@@ -1058,13 +1058,6 @@ export default function MedicationResultPage() {
   const [showCompletedToast, setShowCompletedToast] =
     useState(false);
 
-  useEffect(() => {
-    if (medications.length > 0) {
-      navigate('/medication/result', { replace: true });
-    }
-  }, [medications, navigate]);
-
-
   // useEffect(() => {
   //   setRecords(getMedicationRecordsByDate(selectedDate));
   //   setMedications(getMedications());
