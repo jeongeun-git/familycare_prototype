@@ -1045,20 +1045,41 @@ export default function MedicationPage() {
     useState(false);
 
   
-  //테스트 시마다 데이터 초기화
-  useEffect(() => {
-  const urlParams = new URLSearchParams(window.location.search);
-  const isMazeTest = urlParams.has("reset");
-  if (isMazeTest) {
-    localStorage.clear();
-  }
-  }, []);
+  // //테스트 시마다 데이터 초기화
+  // useEffect(() => {
+  // const urlParams = new URLSearchParams(window.location.search);
+  // const isMazeTest = urlParams.has("reset");
+  // if (isMazeTest) {
+  //   localStorage.clear();
+  // }
+  // }, []);
+
+  // useEffect(() => {
+  //   if (medications.length > 0) {
+  //     navigate('/medication/result', { replace: true });
+  //   }
+  // }, [medications, navigate]);
 
   useEffect(() => {
-    if (medications.length > 0) {
-      navigate('/medication/result', { replace: true });
+    const urlParams = new URLSearchParams(window.location.search);
+    const isMazeTest = urlParams.has("reset");
+
+    if (isMazeTest) {
+      // ✅ 세션 UUID 생성 후 그 키로 구분
+      const newSessionId = `maze_${Date.now()}_${Math.random()}`;
+      localStorage.setItem("MAZE_SESSION_ID", newSessionId);
+      localStorage.removeItem("medications"); // 약 데이터 초기화
+      localStorage.removeItem("records"); // 기록 데이터 초기화
+      sessionStorage.clear(); // sessionStorage까지 초기화
+      return;
     }
-  }, [medications, navigate]);
+
+    const medications = getMedications();
+    if (medications.length > 0) {
+      navigate("/medication/result", { replace: true });
+    }
+  }, [navigate]);
+
 
 
   useEffect(() => {
