@@ -252,7 +252,7 @@ function RTContent({
 
   if (!hasRecords) {
     return (
-      <div className="bg-[#f2f5ed] box-border content-stretch flex flex-col gap-[16px] flex-1 items-center justify-center overflow-clip px-[16px] py-[24px] rounded-tl-[30px] rounded-tr-[30px] w-full">
+      <div className="bg-[#f2f5ed] box-border content-stretch flex flex-col gap-[16px] flex-1 items-center justify-center overflow-clip px-[16px] py-[24px] rounded-tl-[30px] rounded-tr-[30px] w-full h-full">
         <EmptyStateIllustration />
         <EmptyStateContent />
       </div>
