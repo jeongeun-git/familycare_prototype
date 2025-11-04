@@ -1037,12 +1037,13 @@ export default function MedicationResultPage() {
   const { showSuccessModal: shouldShowModal } = location.state || {};
   const [showSuccessModal, setShowSuccessModal] = useState(!!shouldShowModal);
 
-   // 등록된 약이 없으면 MedicationPage로 리다이렉트
+  // 등록된 약이 없으면 MedicationPage로 리다이렉트
+  //showSuccessModal이 true인 경우엔 navigate를 하지 않도록 조건 추가
   useEffect(() => {
-    if (medications.length === 0) {
-      navigate('/medication', { replace: true });
-    }
-  }, [medications, navigate]);
+  if (!showSuccessModal && medications.length === 0) {
+    navigate("/medication", { replace: true });
+  }
+}, [medications, navigate, showSuccessModal]);
 
   const [selectedDate, setSelectedDate] =
     useState(getTodayDate());
